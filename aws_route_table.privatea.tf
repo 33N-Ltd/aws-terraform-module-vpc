@@ -1,4 +1,5 @@
 resource "aws_route_table" "privatea" {
+  count      = "${local.is_availability_zone_a_activated}"
   vpc_id = "${aws_vpc.main.id}"
 
   propagating_vgws = ["${aws_vpn_gateway.vpn_gw.id}"]

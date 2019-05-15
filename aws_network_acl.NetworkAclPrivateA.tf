@@ -1,4 +1,5 @@
 resource "aws_network_acl" "networkaclprivatea" {
+  count      = "${local.is_availability_zone_a_activated}"
   vpc_id     = "${aws_vpc.main.id}"
   subnet_ids = ["${element(aws_subnet.private.*.id,0)}"]
 
