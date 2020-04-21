@@ -1,6 +1,6 @@
 resource "aws_network_acl" "networkaclprivatec" {
-  vpc_id     = "${aws_vpc.main.id}"
-  subnet_ids = ["${element(aws_subnet.private.*.id,2)}"]
+  vpc_id     = aws_vpc.main.id
+  subnet_ids = [aws_subnet.private[2].id]
 
   egress {
     rule_no    = 100
@@ -20,7 +20,14 @@ resource "aws_network_acl" "networkaclprivatec" {
     protocol   = "all"
   }
 
-  tags = "${merge(var.common_tags,
-    map("Type", "NetworkAclPrivateC"),
-    map("Name", "${var.account_name}-NetworkAcl-Private-${element(aws_subnet.private.*.id,2)}"))}"
+  tags = merge(
+    var.common_tags,
+    {
+      "Type" = "NetworkAclPrivateC"
+    },
+    {
+      "Name" = "${var.account_name}-NetworkAcl-Private-${element(aws_subnet.private.*.id, 2)}"
+    },
+  )
 }
+
